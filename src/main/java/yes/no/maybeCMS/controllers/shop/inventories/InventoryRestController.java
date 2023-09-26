@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Inventory;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -18,7 +17,7 @@ public class InventoryRestController {
 
     @GetMapping
     List<Inventory> getAll() {
-            return inventoryRepository.findAll();
+        return inventoryRepository.findAll();
     }
 
     @GetMapping("{id}")
