@@ -21,13 +21,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
     String name;
     String description;
     @ManyToOne(cascade = CascadeType.ALL)
     Category category;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @Fetch(FetchMode.JOIN)
     Set<Tag> tags;
     @OneToOne(cascade = CascadeType.ALL)
