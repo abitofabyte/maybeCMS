@@ -21,9 +21,7 @@ public class TestDataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-
         categoryRepository.save(Category.builder().name("Test Category").description("A category for testing.").build());
-
         tagRepository.save(Tag.builder().name("Test Tag").description("A tag for testing").build());
     }
 }
