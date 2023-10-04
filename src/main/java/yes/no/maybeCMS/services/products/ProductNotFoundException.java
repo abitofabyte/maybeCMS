@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.controllers.shop.products;
+package yes.no.maybeCMS.services.products;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
