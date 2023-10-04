@@ -2,6 +2,7 @@ package yes.no.maybeCMS.controllers.shop.tags;
 
 import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Tag;
+import yes.no.maybeCMS.services.tags.TagService;
 
 import java.util.List;
 import java.util.UUID;
@@ -9,38 +10,34 @@ import java.util.UUID;
 @RestController
 @RequestMapping("tags")
 public class TagRestController {
-    TagRepository tagRepository;
+    private final TagService tagService;
 
-    public TagRestController(TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
+    public TagRestController(TagService tagService) {
+        this.tagService = tagService;
     }
 
     @GetMapping
     List<Tag> getAll() {
-       return tagRepository.findAll();
+        return tagService.getAll();
     }
 
     @GetMapping("{id}")
     Tag getById(@PathVariable UUID id) throws TagNotFoundException {
-        return tagRepository.findById(id).orElseThrow(TagNotFoundException::new);
+        return tagService.getById(id);
     }
 
     @PostMapping
     Tag create(@RequestBody Tag tag) {
-        return tagRepository.save(tag);
+        return tagService.create(tag);
     }
 
     @DeleteMapping("{id}")
     void delete(@PathVariable UUID id) throws TagNotFoundException {
-        var tag = getById(id);
-        tagRepository.delete(tag);
+        tagService.delete(id);
     }
 
     @PatchMapping
     Tag update(@RequestBody Tag tag) throws TagNotFoundException {
-        var dbTag = getById(tag.getId());
-        dbTag.setName(tag.getName() != null ? tag.getName() : dbTag.getName());
-        dbTag.setDescription(tag.getDescription() != null ? tag.getDescription() : dbTag.getDescription());
-        return tagRepository.save(dbTag);
+        return tagService.update(tag);
     }
 }
