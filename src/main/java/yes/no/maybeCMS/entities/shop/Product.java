@@ -23,17 +23,23 @@ public class Product {
     UUID id;
     String name;
     String description;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "CATEGORY_ID")
     Category category;
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "product_tags",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id"))
     Set<Tag> tags;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     Inventory inventory;
     double price;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "VAT_ID")
     Vat vat;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "DISCOUNT_ID")
     Discount discount;
     @CreationTimestamp
     LocalDateTime createdAt;
