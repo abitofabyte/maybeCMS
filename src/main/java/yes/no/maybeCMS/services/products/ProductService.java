@@ -2,17 +2,30 @@ package yes.no.maybeCMS.services.products;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import yes.no.maybeCMS.controllers.shop.inventories.InventoryNotFoundException;
 import yes.no.maybeCMS.entities.shop.Product;
+import yes.no.maybeCMS.entities.shop.Tag;
+import yes.no.maybeCMS.services.categories.CategoryNotFoundException;
+import yes.no.maybeCMS.services.categories.CategoryService;
+import yes.no.maybeCMS.services.inventories.InventoryService;
+import yes.no.maybeCMS.services.tags.TagService;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
+    private final TagService tagService;
+    private final InventoryService inventoryService;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, TagService tagService, InventoryService inventoryService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
+        this.tagService = tagService;
+        this.inventoryService = inventoryService;
     }
 
     public List<Product> getAll() {
@@ -35,17 +48,13 @@ public class ProductService {
     }
 
     @Transactional
-    public Product update(Product product) throws ProductNotFoundException {
+    public Product update(Product product) throws ProductNotFoundException, CategoryNotFoundException, InventoryNotFoundException {
         var dbProduct = getById(product.getId());
-        dbProduct.setName(product.getName() != null ? product.getName() : dbProduct.getName());
-        dbProduct.setDescription(product.getDescription() != null ? product.getDescription() : dbProduct.getDescription());
-        dbProduct.setCategory(product.getCategory() != null ? product.getCategory() : dbProduct.getCategory());
-        dbProduct.setTags(product.getTags() != null ? product.getTags() : dbProduct.getTags());
-        dbProduct.setInventory(product.getInventory() != null ? product.getInventory() : dbProduct.getInventory());
-        dbProduct.setPrice(product.getPrice() > 0.0 ? product.getPrice() : dbProduct.getPrice());
-        dbProduct.setVat(product.getVat() != null ? product.getVat() : dbProduct.getVat());
-        dbProduct.setDiscount(product.getDiscount() != null ? product.getDiscount() : dbProduct.getDiscount());
+        dbProduct.setName(product.getName());
+        dbProduct.setDescription(product.getDescription());
+        dbProduct.setCategory(categoryService.getById(product.getCategory().getId()));
+        dbProduct.setTags(new HashSet<>(tagService.getAllByIds(product.getTags().stream().map(Tag::getId).toList())));
+//        dbProduct.setInventory(inventoryService.getById(product.getInventory().getId()));
         return productRepository.save(dbProduct);
     }
-
 }
