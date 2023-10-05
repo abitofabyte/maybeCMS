@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.controllers.shop.categories;
+package yes.no.maybeCMS.services.categories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import yes.no.maybeCMS.entities.shop.Category;

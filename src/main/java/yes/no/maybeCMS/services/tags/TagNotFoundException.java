@@ -1,8 +1,8 @@
-package yes.no.maybeCMS.controllers.shop.categories;
+package yes.no.maybeCMS.services.tags;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class CategoryNotFoundException extends Exception {
+public class TagNotFoundException extends Exception {
 }

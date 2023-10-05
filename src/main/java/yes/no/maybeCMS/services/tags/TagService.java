@@ -2,11 +2,11 @@ package yes.no.maybeCMS.services.tags;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import yes.no.maybeCMS.controllers.shop.tags.TagNotFoundException;
-import yes.no.maybeCMS.controllers.shop.tags.TagRepository;
 import yes.no.maybeCMS.entities.shop.Tag;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -23,6 +23,10 @@ public class TagService {
 
     public Tag getById(UUID id) throws TagNotFoundException {
         return tagRepository.findById(id).orElseThrow(TagNotFoundException::new);
+    }
+
+    public List<Tag> getAllByIds(Iterable<UUID> ids) {
+        return tagRepository.findAllById(ids);
     }
 
     @Transactional

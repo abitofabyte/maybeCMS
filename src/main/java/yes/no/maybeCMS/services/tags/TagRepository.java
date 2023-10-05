@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.controllers.shop.tags;
+package yes.no.maybeCMS.services.tags;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import yes.no.maybeCMS.entities.shop.Tag;
