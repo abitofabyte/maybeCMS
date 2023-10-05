@@ -1,8 +1,6 @@
 package yes.no.maybeCMS.entities.shop;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +20,8 @@ public class Inventory {
     @Id
     @GeneratedValue
     UUID id;
+    @OneToOne(cascade = CascadeType.ALL)
+    Product product;
     int quantity;
     @CreationTimestamp
     LocalDateTime createdAt;
