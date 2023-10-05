@@ -2,6 +2,8 @@ package yes.no.maybeCMS.controllers.shop.categories;
 
 import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Category;
+import yes.no.maybeCMS.services.categories.CategoryNotFoundException;
+import yes.no.maybeCMS.services.categories.CategoryService;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,43 +12,39 @@ import java.util.UUID;
 @RestController
 @RequestMapping("categories")
 public class CategoryRestController {
-    CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public CategoryRestController(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public CategoryRestController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping
     List<Category> getAll(@RequestParam Optional<String> name) {
         if (name.isEmpty()) {
-            return categoryRepository.findAll();
+            return categoryService.getAll();
         }
-        return categoryRepository.findByNameLike(name.get());
+        return categoryService.getAllByName(name.get());
 
     }
 
     @GetMapping("{id}")
     Category getById(@PathVariable UUID id) throws CategoryNotFoundException {
-        return categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        return categoryService.getById(id);
     }
 
     @PostMapping
     Category save(@RequestBody Category category) {
-        return categoryRepository.save(category);
+        return categoryService.save(category);
     }
 
     @DeleteMapping("{id}")
     void delete(@PathVariable UUID id) throws CategoryNotFoundException {
-        var category = getById(id);
-        categoryRepository.delete(category);
+        categoryService.delete(id);
     }
 
     @PatchMapping
     Category update(@RequestBody Category category) throws CategoryNotFoundException {
-        var dbCategory = getById(category.getId());
-        dbCategory.setName(category.getName() != null ? category.getName() : dbCategory.getName());
-        dbCategory.setDescription(category.getDescription() != null ? category.getDescription() : dbCategory.getDescription());
-        return categoryRepository.save(dbCategory);
+        return categoryService.update(category);
     }
 }
 

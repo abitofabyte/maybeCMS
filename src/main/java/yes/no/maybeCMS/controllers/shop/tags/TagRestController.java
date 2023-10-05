@@ -2,6 +2,7 @@ package yes.no.maybeCMS.controllers.shop.tags;
 
 import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Tag;
+import yes.no.maybeCMS.services.tags.TagNotFoundException;
 import yes.no.maybeCMS.services.tags.TagService;
 
 import java.util.List;
