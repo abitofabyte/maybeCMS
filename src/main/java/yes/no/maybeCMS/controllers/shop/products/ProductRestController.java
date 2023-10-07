@@ -1,11 +1,10 @@
 package yes.no.maybeCMS.controllers.shop.products;
 
 import org.springframework.web.bind.annotation.*;
-import yes.no.maybeCMS.services.categories.CategoryNotFoundException;
 import yes.no.maybeCMS.controllers.shop.discounts.DiscountNotFoundException;
-import yes.no.maybeCMS.controllers.shop.inventories.InventoryNotFoundException;
 import yes.no.maybeCMS.controllers.shop.vats.VatNotFoundException;
 import yes.no.maybeCMS.entities.shop.Product;
+import yes.no.maybeCMS.services.categories.CategoryNotFoundException;
 import yes.no.maybeCMS.services.products.ProductNotFoundException;
 import yes.no.maybeCMS.services.products.ProductService;
 
@@ -42,7 +41,7 @@ public class ProductRestController {
     }
 
     @PatchMapping
-    Product update(@RequestBody Product product) throws ProductNotFoundException, CategoryNotFoundException, InventoryNotFoundException, DiscountNotFoundException, VatNotFoundException {
+    Product update(@RequestBody Product product) throws ProductNotFoundException, CategoryNotFoundException {
         return productService.update(product);
     }
 }

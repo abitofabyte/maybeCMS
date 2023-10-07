@@ -29,7 +29,7 @@ public class Product {
     Category category;
     @ManyToMany
     @Fetch(FetchMode.JOIN)
-    @JoinTable
+    @JoinTable(name = "product_tag")
     Set<Tag> tags;
     double price;
     @ManyToOne

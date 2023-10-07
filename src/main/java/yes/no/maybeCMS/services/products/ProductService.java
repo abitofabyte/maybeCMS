@@ -2,30 +2,29 @@ package yes.no.maybeCMS.services.products;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import yes.no.maybeCMS.controllers.shop.inventories.InventoryNotFoundException;
 import yes.no.maybeCMS.entities.shop.Product;
 import yes.no.maybeCMS.entities.shop.Tag;
 import yes.no.maybeCMS.services.categories.CategoryNotFoundException;
 import yes.no.maybeCMS.services.categories.CategoryService;
-import yes.no.maybeCMS.services.inventories.InventoryService;
 import yes.no.maybeCMS.services.tags.TagService;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
     private final TagService tagService;
-    private final InventoryService inventoryService;
 
-    public ProductService(ProductRepository productRepository, CategoryService categoryService, TagService tagService, InventoryService inventoryService) {
+    public ProductService(ProductRepository productRepository,
+                          CategoryService categoryService,
+                          TagService tagService) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
         this.tagService = tagService;
-        this.inventoryService = inventoryService;
     }
 
     public List<Product> getAll() {
@@ -47,14 +46,17 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    private Iterable<UUID> getTagIdsForProduct(Product product) {
+        return product.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+    }
+
     @Transactional
-    public Product update(Product product) throws ProductNotFoundException, CategoryNotFoundException, InventoryNotFoundException {
+    public Product update(Product product) throws ProductNotFoundException, CategoryNotFoundException {
         var dbProduct = getById(product.getId());
         dbProduct.setName(product.getName());
         dbProduct.setDescription(product.getDescription());
         dbProduct.setCategory(categoryService.getById(product.getCategory().getId()));
-        dbProduct.setTags(new HashSet<>(tagService.getAllByIds(product.getTags().stream().map(Tag::getId).toList())));
-//        dbProduct.setInventory(inventoryService.getById(product.getInventory().getId()));
+        dbProduct.setTags(new HashSet<>(tagService.getAllByIds(getTagIdsForProduct(product))));
         return productRepository.save(dbProduct);
     }
 }
