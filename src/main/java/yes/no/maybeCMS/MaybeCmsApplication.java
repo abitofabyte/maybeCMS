@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @SpringBootApplication
 public class MaybeCmsApplication {
 
@@ -18,7 +20,10 @@ public class MaybeCmsApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:8001");
+				registry
+						.addMapping("/**")
+						.allowedOrigins("http://localhost:8001", "http://192.168.0.38:8001")
+						.allowedMethods("GET", "POST", "PATCH", "DELETE");
 			}
 		};
 	}
