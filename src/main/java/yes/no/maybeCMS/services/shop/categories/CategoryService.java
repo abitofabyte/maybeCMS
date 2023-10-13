@@ -21,7 +21,6 @@ public class CategoryService {
         return categoryRepository.findByNameIgnoreCaseContaining(name);
     }
 
-
     public Category getById(UUID id) throws CategoryNotFoundException {
         return categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
     }
