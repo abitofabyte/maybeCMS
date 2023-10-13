@@ -1,22 +1,21 @@
 package yes.no.maybeCMS.endpoints.shop.discounts;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Discount;
 import yes.no.maybeCMS.services.shop.discounts.DiscountNotFoundException;
 import yes.no.maybeCMS.services.shop.discounts.DiscountService;
+import yes.no.maybeCMS.validation.Uuid;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("discounts")
 public class DiscountRestController {
     private final DiscountService discountService;
-
-    public DiscountRestController(DiscountService discountService) {
-        this.discountService = discountService;
-    }
 
     @GetMapping
     List<Discount> getAll(@RequestParam Optional<String> name) {
@@ -27,7 +26,7 @@ public class DiscountRestController {
     }
 
     @GetMapping("{id}")
-    Discount getById(@PathVariable UUID id) throws DiscountNotFoundException {
+    Discount getById(@Uuid @PathVariable UUID id) throws DiscountNotFoundException {
         return discountService.getById(id);
     }
 
@@ -37,7 +36,7 @@ public class DiscountRestController {
     }
 
     @DeleteMapping("{id}")
-    void delete(@PathVariable UUID id) throws DiscountNotFoundException {
+    void delete(@Uuid @PathVariable UUID id) throws DiscountNotFoundException {
         discountService.delete(id);
     }
 
