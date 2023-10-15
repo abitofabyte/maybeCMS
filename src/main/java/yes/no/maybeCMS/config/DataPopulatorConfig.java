@@ -101,6 +101,14 @@ public class DataPopulatorConfig {
         return users;
     }
 
+    private Set<String> generateImageUrls(int max) {
+        var picsumUrl = "https://picsum.photos/id/";
+
+        return IntStream.range(0, getIntInRange(max))
+                .mapToObj(i -> picsumUrl + getIntInRange(999) + "/800/600")
+                .collect(Collectors.toSet());
+    }
+
     private List<Product> generateProducts(int amount,
                                            List<User> sellers,
                                            List<Category> categories,
@@ -120,6 +128,7 @@ public class DataPopulatorConfig {
                         .discount(discounts.get(getIntInRange(discounts.size())))
                         .vat(vats.get(getIntInRange(vats.size())))
                         .seller(sellers.get(getIntInRange(sellers.size())))
+                        .images(generateImageUrls(10))
                         .build()
                 ).toList();
     }
@@ -128,8 +137,8 @@ public class DataPopulatorConfig {
     public ApplicationRunner populateData() {
         return args -> {
             var users = userRepository.saveAll(generateUsers(10));
-            var categories = categoryRepository.saveAll(generateCategories(20));
-            var discounts = discountRepository.saveAll(generateDiscounts(5));
+            var categories = categoryRepository.saveAll(generateCategories(4));
+            var discounts = discountRepository.saveAll(generateDiscounts(3));
             var tags = tagRepository.saveAll(generateTags(45));
             var vats = vatRepository.saveAll(generateVats());
 
