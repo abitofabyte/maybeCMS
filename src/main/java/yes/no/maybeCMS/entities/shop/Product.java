@@ -49,6 +49,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(nullable = false)
     User seller;
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    Set<String> images;
     @CreationTimestamp
     LocalDateTime createdAt;
     @UpdateTimestamp
