@@ -38,6 +38,11 @@ public class ProductRestController {
         return productService.getAllBySeller(id, pageable);
     }
 
+    @GetMapping("category/{id}")
+    private Page<Product> getAllByCategoryId(@Uuid @PathVariable UUID id, @PageableDefault(size = 20) Pageable pageable) throws CategoryNotFoundException {
+        return productService.getAllByCategory(id, pageable);
+    }
+
     @GetMapping("{id}")
     private Product getById(@Uuid @PathVariable UUID id) throws ProductNotFoundException {
         return productService.getById(id);
