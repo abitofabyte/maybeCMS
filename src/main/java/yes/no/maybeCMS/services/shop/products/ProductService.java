@@ -46,8 +46,13 @@ public class ProductService {
         return productRepository.findByNameIgnoreCaseContaining(name, pageable);
     }
 
-    public Page<Product> getAllBySeller(UUID uuid, Pageable pageable) throws UserNotFoundException {
-        User seller = userService.getById(uuid);
+    public Page<Product> getAllByCategory(UUID id, Pageable pageable) throws CategoryNotFoundException {
+        var category = categoryService.getById(id);
+        return productRepository.findByCategory(category, pageable);
+    }
+
+    public Page<Product> getAllBySeller(UUID id, Pageable pageable) throws UserNotFoundException {
+        User seller = userService.getById(id);
         return productRepository.findBySeller(seller, pageable);
     }
 
