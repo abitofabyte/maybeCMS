@@ -17,7 +17,6 @@ import yes.no.maybeCMS.services.shop.tags.TagService;
 import yes.no.maybeCMS.services.shop.vats.VatNotFoundException;
 import yes.no.maybeCMS.services.shop.vats.VatService;
 import yes.no.maybeCMS.services.users.UserNotFoundException;
-import yes.no.maybeCMS.services.users.UserRepository;
 import yes.no.maybeCMS.services.users.UserService;
 
 import java.util.List;
