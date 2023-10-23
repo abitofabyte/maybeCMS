@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.endpoints.shop.vats;
+package yes.no.maybeCMS.endpoints.shop;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Vat;
 import yes.no.maybeCMS.services.shop.vats.VatNotFoundException;
 import yes.no.maybeCMS.services.shop.vats.VatService;
-import yes.no.maybeCMS.validation.Uuid;
+import yes.no.maybeCMS.services.validation.Uuid;
 
 import java.util.List;
 import java.util.UUID;

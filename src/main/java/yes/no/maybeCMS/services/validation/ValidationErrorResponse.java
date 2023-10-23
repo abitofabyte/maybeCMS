@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.validation;
+package yes.no.maybeCMS.services.validation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

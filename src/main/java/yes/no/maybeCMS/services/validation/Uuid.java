@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.validation;
+package yes.no.maybeCMS.services.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

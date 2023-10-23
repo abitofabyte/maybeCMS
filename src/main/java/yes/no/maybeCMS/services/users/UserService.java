@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yes.no.maybeCMS.entities.users.User;
+import yes.no.maybeCMS.services.shop.products.ProductRepository;
+import yes.no.maybeCMS.services.shop.products.ProductService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,13 +15,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
     public User getByEmail(String email) throws UserNotFoundException {
-        return userRepository.findCmsUserByEmail(email).orElseThrow(UserNotFoundException::new);
+        return userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     public User getById(UUID id) throws UserNotFoundException {
@@ -34,6 +37,7 @@ public class UserService {
     @Transactional
     public void delete(UUID id) throws UserNotFoundException {
         var user = getById(id);
+        productRepository.deleteAllBySeller(user);
         userRepository.delete(user);
     }
 

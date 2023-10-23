@@ -10,8 +10,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import yes.no.maybeCMS.securtiy.Role;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,17 +27,29 @@ public class User {
     @Id
     @GeneratedValue
     private UUID id;
-    @Column(unique = true, nullable = false)
+
+    @Column(nullable = false)
     @NotNull
     @Size(min = 3, max = 255)
     private String handle;
+
     @Column(unique = true, nullable = false)
     @NotNull
     @Email
     private String email;
+
+    @Column(nullable = false)
+    @NotNull
+    private String password;
+
+    @ElementCollection
+    private Set<Role> roles = new HashSet<>();
+
     @Column(nullable = false)
     private LocalDateTime lastLogin;
+
     private boolean isDisabled = false;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.endpoints.shop.tags;
+package yes.no.maybeCMS.endpoints.shop;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Tag;
 import yes.no.maybeCMS.services.shop.tags.TagNotFoundException;
 import yes.no.maybeCMS.services.shop.tags.TagService;
-import yes.no.maybeCMS.validation.Uuid;
+import yes.no.maybeCMS.services.validation.Uuid;
 
 import java.util.List;
 import java.util.Optional;

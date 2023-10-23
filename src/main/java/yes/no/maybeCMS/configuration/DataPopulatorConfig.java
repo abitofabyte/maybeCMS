@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.config;
+package yes.no.maybeCMS.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationRunner;

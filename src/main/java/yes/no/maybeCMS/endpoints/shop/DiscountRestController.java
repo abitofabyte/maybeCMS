@@ -1,11 +1,11 @@
-package yes.no.maybeCMS.endpoints.shop.discounts;
+package yes.no.maybeCMS.endpoints.shop;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Discount;
 import yes.no.maybeCMS.services.shop.discounts.DiscountNotFoundException;
 import yes.no.maybeCMS.services.shop.discounts.DiscountService;
-import yes.no.maybeCMS.validation.Uuid;
+import yes.no.maybeCMS.services.validation.Uuid;
 
 import java.util.List;
 import java.util.Optional;

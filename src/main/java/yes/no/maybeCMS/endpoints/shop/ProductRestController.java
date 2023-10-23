@@ -1,4 +1,4 @@
-package yes.no.maybeCMS.endpoints.shop.products;
+package yes.no.maybeCMS.endpoints.shop;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import yes.no.maybeCMS.services.shop.products.ProductNotFoundException;
 import yes.no.maybeCMS.services.shop.products.ProductService;
 import yes.no.maybeCMS.services.shop.vats.VatNotFoundException;
 import yes.no.maybeCMS.services.users.UserNotFoundException;
-import yes.no.maybeCMS.validation.Uuid;
+import yes.no.maybeCMS.services.validation.Uuid;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +26,7 @@ public class ProductRestController {
     private final ProductService productService;
 
     @GetMapping
+    //todo: search
     private Page<Product> getAll(@RequestParam Optional<String> name, @PageableDefault(size = 20) Pageable pageable) {
         if (name.isEmpty()) {
             return productService.getAllPaged(pageable);

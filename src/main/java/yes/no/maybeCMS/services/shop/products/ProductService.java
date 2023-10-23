@@ -70,6 +70,11 @@ public class ProductService {
         productRepository.delete(product);
     }
 
+    @Transactional
+    public void deleteAllBySeller(User seller) {
+        productRepository.deleteAllBySeller(seller);
+    }
+
     private Iterable<UUID> getTagIdsForProduct(Product product) {
         return product.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
     }

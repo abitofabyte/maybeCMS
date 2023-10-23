@@ -44,7 +44,7 @@ public class Product {
     @JoinColumn(nullable = false)
     Vat vat;
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     Discount discount;
     @ManyToOne
     @JoinColumn(nullable = false)
