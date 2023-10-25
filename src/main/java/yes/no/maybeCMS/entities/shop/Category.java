@@ -25,13 +25,17 @@ public class Category {
     @Id
     @GeneratedValue
     UUID id;
+
     @Column(unique = true, nullable = false)
     @NotNull
     @Size(min = 3, max = 255)
     String name;
+
     String description;
+
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
 }

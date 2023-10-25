@@ -26,16 +26,21 @@ public class Discount {
     @Id
     @GeneratedValue
     UUID id;
+
     @Column(unique = true, nullable = false)
     @NotNull
     @Size(min = 3, max = 255)
     String name;
+
     String description;
+
     @Column(nullable = false)
     @PositiveOrZero
     double percentage;
+
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
 }

@@ -26,15 +26,19 @@ public class Vat {
     @Id
     @GeneratedValue
     UUID id;
+
     @Column(unique = true, nullable = false)
     @NotNull
     @Size(min = 3, max = 255)
     String name;
+
     @NotNull
     @PositiveOrZero
     double amount;
+
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
 }

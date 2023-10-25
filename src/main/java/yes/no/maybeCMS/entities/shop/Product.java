@@ -25,34 +25,45 @@ public class Product {
     @Id
     @GeneratedValue
     UUID id;
+
     @Column(unique = true, nullable = false)
     @NotNull
     @Size(min = 3, max = 255)
     String name;
+
     @Lob
     String description;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     Category category;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "product_tag")
     Set<Tag> tags;
+
     @Column(nullable = false)
     @PositiveOrZero
     double price;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     Vat vat;
+
     @ManyToOne
     @JoinColumn(nullable = true)
     Discount discount;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     User seller;
+
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     Set<String> images;
+
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
 }
