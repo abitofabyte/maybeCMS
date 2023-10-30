@@ -12,5 +12,9 @@ public enum Role {
     AWAITING_CONFIRMATION,
     REGISTERED,
     SELLER,
-    ADMIN
+    ADMIN;
+
+    public String asAuthority() {
+        return "SCOPE_" + name();
+    }
 }

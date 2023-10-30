@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import yes.no.maybeCMS.entities.users.User;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
@@ -14,7 +15,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        var authorities = user.getRoles().stream().map(Enum::name).toList();
+        var authorities = user.getRoles().stream().map(Role::name).collect(Collectors.toSet());
         return AuthorityUtils.createAuthorityList(authorities);
     }
 

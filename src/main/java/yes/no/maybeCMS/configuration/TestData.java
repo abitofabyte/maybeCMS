@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import yes.no.maybeCMS.entities.shop.*;
 import yes.no.maybeCMS.entities.users.User;
+import yes.no.maybeCMS.securtiy.Role;
 import yes.no.maybeCMS.services.shop.categories.CategoryRepository;
 import yes.no.maybeCMS.services.shop.discounts.DiscountRepository;
 import yes.no.maybeCMS.services.shop.products.ProductRepository;
@@ -20,7 +22,7 @@ import java.util.stream.IntStream;
 
 @Configuration
 @RequiredArgsConstructor
-public class DataPopulatorConfig {
+public class TestData {
 
     private static final String lorem = """
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis, risus vitae faucibus consequat, turpis lorem ornare eros, in dictum arcu est bibendum ex. Curabitur condimentum sapien egestas, bibendum tellus vel, laoreet turpis. Vivamus aliquam magna elementum libero pellentesque, vitae porttitor erat laoreet. Maecenas auctor urna ac nibh finibus varius. Sed eget vestibulum sem. Ut at tellus justo. Nulla ligula purus, tempor sit amet libero eget, vehicula varius dolor. Pellentesque fringilla malesuada magna.
@@ -41,6 +43,8 @@ public class DataPopulatorConfig {
     private final VatRepository vatRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     private List<Category> generateCategories(int amount) {
         return IntStream.range(0, amount)
@@ -95,12 +99,18 @@ public class DataPopulatorConfig {
                 .mapToObj(i -> User.builder()
                         .handle("User #" + i)
                         .email("user" + i + "@example.com")
+                        .password(passwordEncoder.encode("123"))
+                        .profilePicture("https://picsum.photos/400/400")
+                        .roles(Set.of(Role.REGISTERED))
                         .lastLogin(LocalDateTime.now())
                         .build()
                 ).toList());
         users.add(User.builder()
                 .handle("Yes")
                 .email("marcus.migotti@gmail.com")
+                .password(passwordEncoder.encode("admin"))
+                .profilePicture("/public/admin.png")
+                .roles(Set.of(Role.REGISTERED, Role.SELLER, Role.ADMIN))
                 .lastLogin(LocalDateTime.now())
                 .build());
         return users;
@@ -139,7 +149,7 @@ public class DataPopulatorConfig {
     }
 
     @Bean
-    public ApplicationRunner populateData() {
+    public ApplicationRunner populate() {
         return args -> {
             var users = userRepository.saveAll(generateUsers(10));
             var categories = categoryRepository.saveAll(generateCategories(4));

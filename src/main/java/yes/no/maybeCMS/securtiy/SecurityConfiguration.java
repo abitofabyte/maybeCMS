@@ -28,6 +28,8 @@ import yes.no.maybeCMS.services.users.UserRepository;
 
 import java.util.List;
 
+import static yes.no.maybeCMS.securtiy.Role.*;
+
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(RsaKeyProperties.class)
@@ -37,10 +39,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN");
+                    auth.requestMatchers("/authenticate", "/register").permitAll();
+                    auth.requestMatchers("/users").hasAuthority(ADMIN.asAuthority());
                     auth.requestMatchers(HttpMethod.GET).permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/categories").hasAuthority(ADMIN.asAuthority());
+                    auth.requestMatchers("/vats").hasAuthority(ADMIN.asAuthority());
+                    auth.requestMatchers(HttpMethod.POST).hasAuthority(SELLER.asAuthority());
+                    auth.requestMatchers(HttpMethod.PATCH).hasAuthority(SELLER.asAuthority());
+                    auth.requestMatchers(HttpMethod.DELETE).hasAuthority(SELLER.asAuthority());
+                    auth.requestMatchers("/**").hasAuthority(ADMIN.asAuthority());
+                    auth.anyRequest().denyAll();
                 })
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)

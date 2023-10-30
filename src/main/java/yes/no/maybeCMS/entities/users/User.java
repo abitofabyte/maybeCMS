@@ -38,14 +38,16 @@ public class User {
     @Email
     private String email;
 
+    private String profilePicture;
+
     @Column(nullable = false)
     @NotNull
     private String password;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @NotNull
     private Set<Role> roles = new HashSet<>();
 
-    @Column(nullable = false)
     private LocalDateTime lastLogin;
 
     private boolean isDisabled = false;
