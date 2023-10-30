@@ -40,10 +40,10 @@ public class SecurityConfiguration {
         return http
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/authenticate", "/register").permitAll();
-                    auth.requestMatchers("/users").hasAuthority(ADMIN.asAuthority());
+                    auth.requestMatchers("/users/**").hasAuthority(ADMIN.asAuthority());
                     auth.requestMatchers(HttpMethod.GET).permitAll();
-                    auth.requestMatchers("/categories").hasAuthority(ADMIN.asAuthority());
-                    auth.requestMatchers("/vats").hasAuthority(ADMIN.asAuthority());
+                    auth.requestMatchers("/categories/**").hasAuthority(ADMIN.asAuthority());
+                    auth.requestMatchers("/vats/**").hasAuthority(ADMIN.asAuthority());
                     auth.requestMatchers(HttpMethod.POST).hasAuthority(SELLER.asAuthority());
                     auth.requestMatchers(HttpMethod.PATCH).hasAuthority(SELLER.asAuthority());
                     auth.requestMatchers(HttpMethod.DELETE).hasAuthority(SELLER.asAuthority());
