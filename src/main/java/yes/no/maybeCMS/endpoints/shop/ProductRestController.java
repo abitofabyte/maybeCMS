@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import yes.no.maybeCMS.entities.shop.Product;
 import yes.no.maybeCMS.services.shop.categories.CategoryNotFoundException;
@@ -36,12 +37,17 @@ public class ProductRestController {
 
     @GetMapping("seller/{id}")
     private Page<Product> getAllBySellerId(@Uuid @PathVariable UUID id, @PageableDefault(size = 20) Pageable pageable) throws UserNotFoundException {
-        return productService.getAllBySeller(id, pageable);
+        return productService.getAllBySellerId(id, pageable);
     }
 
     @GetMapping("category/{id}")
     private Page<Product> getAllByCategoryId(@Uuid @PathVariable UUID id, @PageableDefault(size = 20) Pageable pageable) throws CategoryNotFoundException {
         return productService.getAllByCategory(id, pageable);
+    }
+
+    @GetMapping("admin")
+    private Page<Product> getAllByAuthentication(Authentication authentication, @PageableDefault(size = 20) Pageable pageable) throws UserNotFoundException {
+        return productService.getAllBySellerEmail(authentication.getName(), pageable);
     }
 
     @GetMapping("{id}")

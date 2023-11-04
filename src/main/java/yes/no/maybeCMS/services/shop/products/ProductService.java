@@ -50,8 +50,13 @@ public class ProductService {
         return productRepository.findByCategory(category, pageable);
     }
 
-    public Page<Product> getAllBySeller(UUID id, Pageable pageable) throws UserNotFoundException {
+    public Page<Product> getAllBySellerId(UUID id, Pageable pageable) throws UserNotFoundException {
         User seller = userService.getById(id);
+        return productRepository.findBySeller(seller, pageable);
+    }
+
+    public Page<Product> getAllBySellerEmail(String email, Pageable pageable) throws UserNotFoundException {
+        var seller = userService.getByEmail(email);
         return productRepository.findBySeller(seller, pageable);
     }
 

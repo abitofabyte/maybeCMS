@@ -95,13 +95,18 @@ public class TestData {
     }
 
     private List<User> generateUsers(int amount) {
+        var roles = List.of(
+                Set.of(Role.AWAITING_CONFIRMATION),
+                Set.of(Role.REGISTERED),
+                Set.of(Role.REGISTERED, Role.SELLER)
+        );
         var users = new ArrayList<>(IntStream.range(0, amount)
                 .mapToObj(i -> User.builder()
                         .handle("User #" + i)
                         .email("user" + i + "@example.com")
                         .password(passwordEncoder.encode("123"))
                         .profilePicture("https://picsum.photos/400/400")
-                        .roles(Set.of(Role.REGISTERED))
+                        .roles(roles.get(getIntInRange(roles.size())))
                         .lastLogin(LocalDateTime.now())
                         .build()
                 ).toList());
@@ -109,7 +114,7 @@ public class TestData {
                 .handle("Yes")
                 .email("marcus.migotti@gmail.com")
                 .password(passwordEncoder.encode("admin"))
-                .profilePicture("/public/admin.png")
+                .profilePicture("/admin.png")
                 .roles(Set.of(Role.REGISTERED, Role.SELLER, Role.ADMIN))
                 .lastLogin(LocalDateTime.now())
                 .build());

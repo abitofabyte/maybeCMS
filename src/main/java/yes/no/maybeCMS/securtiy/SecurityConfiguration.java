@@ -39,16 +39,15 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.GET, "/products/admin").hasAuthority(SELLER.asAuthority());
                     auth.requestMatchers("/authenticate", "/register").permitAll();
-                    auth.requestMatchers("/users/**").hasAuthority(ADMIN.asAuthority());
+                    auth.requestMatchers(HttpMethod.GET, "/users/**").hasAuthority(ADMIN.asAuthority());
                     auth.requestMatchers(HttpMethod.GET).permitAll();
-                    auth.requestMatchers("/categories/**").hasAuthority(ADMIN.asAuthority());
-                    auth.requestMatchers("/vats/**").hasAuthority(ADMIN.asAuthority());
                     auth.requestMatchers(HttpMethod.POST).hasAuthority(SELLER.asAuthority());
                     auth.requestMatchers(HttpMethod.PATCH).hasAuthority(SELLER.asAuthority());
                     auth.requestMatchers(HttpMethod.DELETE).hasAuthority(SELLER.asAuthority());
-                    auth.requestMatchers("/**").hasAuthority(ADMIN.asAuthority());
-                    auth.anyRequest().denyAll();
+                    auth.anyRequest().hasAuthority(ADMIN.asAuthority());
+
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
