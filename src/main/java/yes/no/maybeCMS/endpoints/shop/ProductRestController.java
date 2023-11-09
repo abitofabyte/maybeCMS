@@ -17,6 +17,7 @@ import yes.no.maybeCMS.services.shop.vats.VatNotFoundException;
 import yes.no.maybeCMS.services.users.UserNotFoundException;
 import yes.no.maybeCMS.services.validation.Uuid;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,19 +41,23 @@ public class ProductRestController {
         return productService.getAllBySellerId(id, pageable);
     }
 
-    @GetMapping("category/{id}")
-    private Page<Product> getAllByCategoryId(@Uuid @PathVariable UUID id, @PageableDefault(size = 20) Pageable pageable) throws CategoryNotFoundException {
-        return productService.getAllByCategory(id, pageable);
+    @GetMapping("category/{categoryName}")
+    private Page<Product> getAllByCategoryName(@PathVariable String categoryName, @RequestParam Optional<String> productName, @RequestParam Optional<List<String>> tags, @PageableDefault(size = 10) Pageable pageable) throws CategoryNotFoundException {
+        if (tags.isEmpty()) {
+            return productService.getAllByCategory(categoryName, pageable);
+        } else {
+            return productService.getAllByCategoryAndTags(categoryName, tags.get(), pageable);
+        }
     }
 
-    @GetMapping("admin")
+    @GetMapping("manage")
     private Page<Product> getAllByAuthentication(Authentication authentication, @PageableDefault(size = 20) Pageable pageable) throws UserNotFoundException {
         return productService.getAllBySellerEmail(authentication.getName(), pageable);
     }
 
-    @GetMapping("{id}")
-    private Product getById(@Uuid @PathVariable UUID id) throws ProductNotFoundException {
-        return productService.getById(id);
+    @GetMapping("{name}")
+    private Product getByName(@PathVariable String name) throws ProductNotFoundException {
+        return productService.getByName(name);
     }
 
     @PostMapping

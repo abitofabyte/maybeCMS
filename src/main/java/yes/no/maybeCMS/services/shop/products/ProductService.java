@@ -19,6 +19,7 @@ import yes.no.maybeCMS.services.shop.vats.VatService;
 import yes.no.maybeCMS.services.users.UserNotFoundException;
 import yes.no.maybeCMS.services.users.UserService;
 
+import javax.naming.PartialResultException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,13 +42,23 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public Product getById(UUID id) throws ProductNotFoundException {
+        return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+    }
+
     public Page<Product> getAllByName(String name, Pageable pageable) {
         return productRepository.findByNameIgnoreCaseContaining(name, pageable);
     }
 
-    public Page<Product> getAllByCategory(UUID id, Pageable pageable) throws CategoryNotFoundException {
-        var category = categoryService.getById(id);
+    public Page<Product> getAllByCategory(String name, Pageable pageable) throws CategoryNotFoundException {
+        var category = categoryService.getByName(name);
         return productRepository.findByCategory(category, pageable);
+    }
+
+    public Page<Product> getAllByCategoryAndTags(String categoryName, List<String> tagNames, Pageable pageable) throws CategoryNotFoundException {
+        var category = categoryService.getByName(categoryName);
+        var tags = tagService.getAllByNames(tagNames);
+        return productRepository.findByCategoryAndTagsIn(category, tags, pageable);
     }
 
     public Page<Product> getAllBySellerId(UUID id, Pageable pageable) throws UserNotFoundException {
@@ -60,8 +71,8 @@ public class ProductService {
         return productRepository.findBySeller(seller, pageable);
     }
 
-    public Product getById(UUID id) throws ProductNotFoundException {
-        return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+    public Product getByName(String name) throws ProductNotFoundException {
+        return productRepository.findByName(name).orElseThrow(ProductNotFoundException::new);
     }
 
     @Transactional

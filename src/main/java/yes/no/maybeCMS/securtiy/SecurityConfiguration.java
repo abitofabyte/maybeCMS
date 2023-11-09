@@ -39,7 +39,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/products/admin").hasAuthority(SELLER.asAuthority());
+                    auth.requestMatchers(HttpMethod.GET, "/products/manage").hasAuthority(SELLER.asAuthority());
                     auth.requestMatchers("/authenticate", "/register").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/users/**").hasAuthority(ADMIN.asAuthority());
                     auth.requestMatchers(HttpMethod.GET).permitAll();

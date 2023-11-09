@@ -10,6 +10,7 @@ import yes.no.maybeCMS.services.validation.Uuid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -29,6 +30,11 @@ public class TagRestController {
     @GetMapping("{id}")
     private Tag getById(@Uuid @PathVariable UUID id) throws TagNotFoundException {
         return tagService.getById(id);
+    }
+
+    @GetMapping("test")
+    private Set<Tag> getByNames(@RequestParam Optional<List<String>> names) {
+        return tagService.getAllByName(names);
     }
 
     @PostMapping

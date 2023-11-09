@@ -25,6 +25,10 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
     }
 
+    public Category getByName(String name) throws CategoryNotFoundException {
+        return categoryRepository.findByName(name).orElseThrow(CategoryNotFoundException::new);
+    }
+
     @Transactional
     public Category save(Category category) {
         return categoryRepository.save(category);

@@ -28,6 +28,14 @@ public class TagService {
         return new HashSet<>(tagRepository.findAllById(ids));
     }
 
+    public Set<Tag> getAllByNames(List<String> names) {
+        return new HashSet<>(tagRepository.findAllByNameIgnoreCaseIn(names));
+    }
+
+    public Set<Tag> getAllByName(Optional<List<String>> names) {
+        return new HashSet<>(tagRepository.findAllByNameIgnoreCaseIn(names));
+    }
+
     @Transactional
     public Tag create(Tag tag) {
         return tagRepository.save(tag);

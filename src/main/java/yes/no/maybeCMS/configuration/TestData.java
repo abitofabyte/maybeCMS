@@ -46,22 +46,45 @@ public class TestData {
 
     private final PasswordEncoder passwordEncoder;
 
-    private List<Category> generateCategories(int amount) {
-        return IntStream.range(0, amount)
-                .mapToObj(i -> Category.builder()
-                        .name("Category " + i)
-                        .description("Test category #" + i)
-                        .build())
-                .toList();
+    private List<Category> initializeCategories() {
+        return List.of(
+                Category.builder()
+                        .name("Models")
+                        .description("3D Models")
+                        .build(),
+                Category.builder()
+                        .name("Textures")
+                        .description("Textures")
+                        .build(),
+                Category.builder()
+                        .name("Tools")
+                        .description("Tools")
+                        .build(),
+                Category.builder()
+                        .name("Plugins")
+                        .description("Plugins")
+                        .build()
+        );
     }
 
-    private List<Discount> generateDiscounts(int amount) {
-        return IntStream.range(0, amount)
-                .mapToObj(i -> Discount.builder()
-                        .name("Discount " + i)
-                        .description("Test discount #" + i)
-                        .build())
-                .toList();
+    private List<Discount> generateDiscounts() {
+        return List.of(
+                Discount.builder()
+                        .name("None")
+                        .description("No discount")
+                        .percentage(0.0)
+                        .build(),
+                Discount.builder()
+                        .name("Summer sale")
+                        .description("Asset flipper summer sale!")
+                        .percentage(0.2)
+                        .build(),
+                Discount.builder()
+                        .name("NEW")
+                        .description("A new product, grab it quick!")
+                        .percentage(0.1)
+                        .build()
+        );
     }
 
     private List<Tag> generateTags(int amount) {
@@ -118,6 +141,22 @@ public class TestData {
                 .roles(Set.of(Role.REGISTERED, Role.SELLER, Role.ADMIN))
                 .lastLogin(LocalDateTime.now())
                 .build());
+        users.add(User.builder()
+                .handle("Yes")
+                .email("marcus.migotti@gmx.net")
+                .password(passwordEncoder.encode("123"))
+                .profilePicture("/admin.png")
+                .roles(Set.of(Role.REGISTERED, Role.SELLER))
+                .lastLogin(LocalDateTime.now())
+                .build());
+        users.add(User.builder()
+                .handle("Seller")
+                .email("seller@example.com")
+                .password(passwordEncoder.encode("123"))
+                .profilePicture("https://picsum.photos/400/400")
+                .roles(Set.of(Role.REGISTERED, Role.SELLER))
+                .lastLogin(LocalDateTime.now())
+                .build());
         return users;
     }
 
@@ -140,7 +179,7 @@ public class TestData {
 
         return IntStream.range(0, amount)
                 .mapToObj(i -> Product.builder()
-                        .name("Product #" + i)
+                        .name("Product " + i)
                         .description(lorem)
                         .category(categories.get(getIntInRange(categories.size())))
                         .tags(getRandomTags(tags, 0, 5))
@@ -157,12 +196,12 @@ public class TestData {
     public ApplicationRunner populate() {
         return args -> {
             var users = userRepository.saveAll(generateUsers(10));
-            var categories = categoryRepository.saveAll(generateCategories(4));
-            var discounts = discountRepository.saveAll(generateDiscounts(3));
+            var categories = categoryRepository.saveAll(initializeCategories());
+            var discounts = discountRepository.saveAll(generateDiscounts());
             var tags = tagRepository.saveAll(generateTags(45));
             var vats = vatRepository.saveAll(generateVats());
 
-            productRepository.saveAll(generateProducts(100, users, categories, tags, 10, 100, discounts, vats));
+            productRepository.saveAll(generateProducts(500, users, categories, tags, 10, 100, discounts, vats));
         };
     }
 }
