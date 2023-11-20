@@ -13,8 +13,6 @@ import yes.no.maybeCMS.services.users.CreateUserResult;
 import yes.no.maybeCMS.services.users.UserNotFoundException;
 import yes.no.maybeCMS.services.users.UserService;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationRestController {
@@ -24,8 +22,6 @@ public class AuthenticationRestController {
     @GetMapping("authenticate")
     AuthenticationResponse getToken(Authentication authentication) throws UserNotFoundException {
         var user = userService.getByEmail(authentication.getName());
-//        user.setLastLogin(LocalDateTime.now());
-//        user = userService.update(user);
 
         return AuthenticationResponse.builder()
                 .token(jwtGenerator.generate(authentication))
